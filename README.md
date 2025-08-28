@@ -101,16 +101,11 @@ IoT Devices → RabbitMQ → Consumer Service → MongoDB
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/RezaNorm/pantohealth-iot-task.git
    cd pantohealth-iot-task
    ```
 
-2. **Copy environment file**
-   ```bash
-   cp env.example .env
-   ```
-
-3. **Configure environment variables** (optional - defaults are provided)
+2. **Configure environment variables** (optional - defaults are provided)
    ```bash
    # MongoDB
    MONGODB_URI=mongodb://localhost:27017/xray-iot
@@ -146,23 +141,16 @@ docker-compose logs -f
 docker-compose down
 ```
 
-### Development Mode
-Run only infrastructure services (MongoDB, RabbitMQ) for local development:
-
-```bash
-# Start infrastructure services
-docker-compose -f docker-compose.dev.yml up -d
-
-# Stop infrastructure services
-docker-compose -f docker-compose.dev.yml down
-```
-
 ### Services Overview
 - **API Service**: http://localhost:3000
 - **Producer Service**: http://localhost:3001
 - **Consumer Service**: http://localhost:3002
 - **MongoDB**: localhost:27017
 - **RabbitMQ Management**: http://localhost:15672 (guest/guest)
+
+### API Documentation
+- **Swagger UI**: http://localhost:3000/api/docs
+- **OpenAPI JSON**: http://localhost:3000/api/docs-json
 
 ## 🧪 Running Tests
 
@@ -176,30 +164,6 @@ docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 # Run tests without coverage
 docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 ```
-
-### Local Testing
-For local development and testing:
-
-```bash
-# Install dependencies
-npm install
-
-# Run unit tests
-npm run test:unit
-
-# Run tests with coverage
-npm run test:cov
-
-# Run tests in watch mode
-npm run test:watch
-```
-
-### Test Coverage
-The test suite includes:
-- **Unit Tests**: 8 test suites, 17 tests
-- **Coverage**: 38.19% overall coverage
-- **Services Tested**: All core services and controllers
-
 ## 📡 API Endpoints
 
 ### Signal Management
@@ -218,10 +182,6 @@ The test suite includes:
 
 ### Consumer Endpoints
 - `GET /stats` - Get processing statistics
-
-### API Documentation
-- **Swagger UI**: http://localhost:3000/api/docs
-- **OpenAPI JSON**: http://localhost:3000/api/docs-json
 
 ## 📊 Sample Data Structure
 
@@ -242,47 +202,6 @@ The test suite includes:
   "processedAt": "2025-01-01T12:00:00.000Z",
   "status": "processed"
 }
-```
-
-## 🔧 Development Commands
-
-### Local Development
-```bash
-# Install dependencies
-npm install
-
-# Start API service
-npm run start:dev api
-
-# Start producer service
-npm run start:dev producer
-
-# Start consumer service
-npm run start:dev consumer
-
-# Build all applications
-npm run build
-
-# Lint code
-npm run lint
-
-# Format code
-npm run format
-```
-
-### Docker Commands
-```bash
-# Build specific service
-docker-compose build api
-
-# View service logs
-docker-compose logs -f api
-
-# Execute command in running container
-docker-compose exec api sh
-
-# Remove all containers and volumes
-docker-compose down -v
 ```
 
 ## 📁 Project Structure
