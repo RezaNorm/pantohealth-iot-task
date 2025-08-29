@@ -152,37 +152,6 @@ docker-compose down
 - **Swagger UI**: http://localhost:3000/api/docs
 - **OpenAPI JSON**: http://localhost:3000/api/docs-json
 
-## 🧪 Running Tests
-
-### Unit Tests in Docker
-Run all unit tests in a containerized environment:
-
-```bash
-# Run tests with coverage
-docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
-
-# Run tests without coverage
-docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
-```
-## 📡 API Endpoints
-
-### Signal Management
-- `GET /api/signals` - Get all signals
-- `GET /api/signals/:id` - Get signal by ID
-- `GET /api/signals/stats` - Get signal statistics
-- `GET /api/signals/device/:deviceId` - Get signals by device
-- `GET /api/signals/date-range` - Get signals by date range
-- `POST /api/signals` - Create new signal
-- `PUT /api/signals/:id` - Update signal
-- `DELETE /api/signals/:id` - Delete signal
-
-### Producer Endpoints
-- `POST /simulate` - Simulate x-ray data
-- `POST /start-simulation` - Start continuous simulation
-
-### Consumer Endpoints
-- `GET /stats` - Get processing statistics
-
 ## 📊 Sample Data Structure
 
 ### X-Ray Signal Data
