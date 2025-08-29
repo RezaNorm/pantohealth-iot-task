@@ -34,26 +34,43 @@ export class SignalController {
   constructor(private readonly signalService: SignalService) {}
 
   @Post('process')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Process X-ray data',
-    description: 'Process incoming x-ray data from IoT devices and store it in the database'
+    description:
+      'Process incoming x-ray data from IoT devices and store it in the database',
   })
-  @ApiBody({ type: ProcessXRayDataDto })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiBody({
+    type: ProcessXRayDacesstaDto,
+    examples: {
+      example: {
+        value: {
+          '66bb584d4ae73e488c30a072': {
+            data: [
+              [762, [51.339764, 12.339223833333334, 1.2038000000000002]],
+              [1766, [51.33977733333333, 12.339211833333334, 1.531604]],
+              [2763, [51.339782, 12.339196166666667, 2.13906]],
+            ],
+            time: 1735683480000,
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
     description: 'X-ray data processed successfully',
-    type: ApiResponseDto<SignalResponseDto>
+    type: ApiResponseDto<SignalResponseDto>,
   })
-  @ApiResponse({ 
-    status: 400, 
+  @ApiResponse({
+    status: 400,
     description: 'Invalid x-ray data format',
     schema: {
       example: {
         success: false,
         message: 'Failed to process x-ray data',
-        error: 'Invalid x-ray data format'
-      }
-    }
+        error: 'Invalid x-ray data format',
+      },
+    },
   })
   async processXRayData(@Body() rawData: ProcessXRayDataDto) {
     try {
@@ -79,32 +96,33 @@ export class SignalController {
   }
 
   @Get()
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get all signals',
-    description: 'Retrieve all x-ray signals with optional filtering by device ID or date range'
+    description:
+      'Retrieve all x-ray signals with optional filtering by device ID or date range',
   })
-  @ApiQuery({ 
-    name: 'deviceId', 
-    required: false, 
+  @ApiQuery({
+    name: 'deviceId',
+    required: false,
     description: 'Filter by device ID',
-    example: '66bb584d4ae73e488c30a072'
+    example: '66bb584d4ae73e488c30a072',
   })
-  @ApiQuery({ 
-    name: 'startDate', 
-    required: false, 
+  @ApiQuery({
+    name: 'startDate',
+    required: false,
     description: 'Filter by start date (ISO format)',
-    example: '2024-01-01'
+    example: '2024-01-01',
   })
-  @ApiQuery({ 
-    name: 'endDate', 
-    required: false, 
+  @ApiQuery({
+    name: 'endDate',
+    required: false,
     description: 'Filter by end date (ISO format)',
-    example: '2024-12-31'
+    example: '2024-12-31',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Signals retrieved successfully',
-    type: ApiResponseDto<[SignalResponseDto]>
+    type: ApiResponseDto<[SignalResponseDto]>,
   })
   async getAllSignals(
     @Query('deviceId') deviceId?: string,
@@ -113,7 +131,7 @@ export class SignalController {
   ) {
     try {
       let signals;
-      
+
       if (deviceId) {
         signals = await this.signalService.getSignalsByDeviceId(deviceId);
       } else if (startDate && endDate) {
@@ -143,14 +161,14 @@ export class SignalController {
   }
 
   @Get('stats')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get signal statistics',
-    description: 'Retrieve aggregated statistics about all x-ray signals'
+    description: 'Retrieve aggregated statistics about all x-ray signals',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Statistics retrieved successfully',
-    type: ApiResponseDto<SignalStatsDto>
+    type: ApiResponseDto<SignalStatsDto>,
   })
   async getSignalStats() {
     try {
@@ -173,29 +191,29 @@ export class SignalController {
   }
 
   @Get(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get signal by ID',
-    description: 'Retrieve a specific x-ray signal by its ID'
+    description: 'Retrieve a specific x-ray signal by its ID',
   })
-  @ApiParam({ 
-    name: 'id', 
+  @ApiParam({
+    name: 'id',
     description: 'Signal ID',
-    example: '68b050a2a382a0eecbe9f400'
+    example: '68b050a2a382a0eecbe9f400',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Signal retrieved successfully',
-    type: ApiResponseDto<SignalResponseDto>
+    type: ApiResponseDto<SignalResponseDto>,
   })
-  @ApiResponse({ 
-    status: 404, 
+  @ApiResponse({
+    status: 404,
     description: 'Signal not found',
     schema: {
       example: {
         success: false,
-        message: 'Signal not found'
-      }
-    }
+        message: 'Signal not found',
+      },
+    },
   })
   async getSignalById(@Param('id') id: string) {
     try {
@@ -231,34 +249,40 @@ export class SignalController {
   }
 
   @Put(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Update signal',
-    description: 'Update a specific x-ray signal'
+    description: 'Update a specific x-ray signal',
   })
-  @ApiParam({ 
-    name: 'id', 
+  @ApiParam({
+    name: 'id',
     description: 'Signal ID',
-    example: '68b050a2a382a0eecbe9f400'
+    example: '68b050a2a382a0eecbe9f400',
   })
   @ApiBody({ type: UpdateSignalDto })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Signal updated successfully',
-    type: ApiResponseDto<SignalResponseDto>
+    type: ApiResponseDto<SignalResponseDto>,
   })
-  @ApiResponse({ 
-    status: 404, 
+  @ApiResponse({
+    status: 404,
     description: 'Signal not found',
     schema: {
       example: {
         success: false,
-        message: 'Signal not found'
-      }
-    }
+        message: 'Signal not found',
+      },
+    },
   })
-  async updateSignal(@Param('id') id: string, @Body() updateData: UpdateSignalDto) {
+  async updateSignal(
+    @Param('id') id: string,
+    @Body() updateData: UpdateSignalDto,
+  ) {
     try {
-      const updatedSignal = await this.signalService.updateSignal(id, updateData);
+      const updatedSignal = await this.signalService.updateSignal(
+        id,
+        updateData,
+      );
       if (!updatedSignal) {
         throw new HttpException(
           {
@@ -291,29 +315,29 @@ export class SignalController {
   }
 
   @Delete(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Delete signal',
-    description: 'Delete a specific x-ray signal'
+    description: 'Delete a specific x-ray signal',
   })
-  @ApiParam({ 
-    name: 'id', 
+  @ApiParam({
+    name: 'id',
     description: 'Signal ID',
-    example: '68b050a2a382a0eecbe9f400'
+    example: '68b050a2a382a0eecbe9f400',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Signal deleted successfully',
-    type: ApiResponseDto<SignalResponseDto>
+    type: ApiResponseDto<SignalResponseDto>,
   })
-  @ApiResponse({ 
-    status: 404, 
+  @ApiResponse({
+    status: 404,
     description: 'Signal not found',
     schema: {
       example: {
         success: false,
-        message: 'Signal not found'
-      }
-    }
+        message: 'Signal not found',
+      },
+    },
   })
   async deleteSignal(@Param('id') id: string) {
     try {
