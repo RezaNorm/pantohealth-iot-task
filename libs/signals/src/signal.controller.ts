@@ -40,7 +40,7 @@ export class SignalController {
       'Process incoming x-ray data from IoT devices and store it in the database',
   })
   @ApiBody({
-    type: ProcessXRayDacesstaDto,
+    type: ProcessXRayDataDto,
     examples: {
       example: {
         value: {
